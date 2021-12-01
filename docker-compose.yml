@@ -1,0 +1,9 @@
+version: "3"
+services:
+  nginx:
+    image: novo_nginx
+    ports:
+    - '80:80'
+    container_name: 'composeTeste'
+    deploy:
+      replicas: 4
