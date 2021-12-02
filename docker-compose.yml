@@ -1,9 +1,9 @@
-version: "3"
+version: "3.9"
 services:
   nginx:
     image: novo_nginx
     ports:
-    - '80:80'
-    container_name: 'composeTeste'
+    - '8080:80'
+    container_name: 'nginxSwarm'
     deploy:
       replicas: 4

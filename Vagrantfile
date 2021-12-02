@@ -4,7 +4,7 @@
 BOX_NAME = "ubuntu/focal64"
 MEMORY = "512"
 CPUS = 1
-MANAGERS = 2 
+MANAGERS = 1
 MANAGER_IP = "172.20.20.1"
 WORKERS = 2
 WORKER_IP = "172.20.20.10"
@@ -23,13 +23,13 @@ echo \
 sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 SCRIPT
 
-$enter_swarm_worker = <<-SCRIPT
-sudo docker swarm join --token SWMTKN-1-0kl5w9sjgf407d4g08brmpydu7wp8gdbl5mavwl620f4msdrnh-5qalcoe6kuc7aon3uqh8bqu7h 172.20.20.1:2377
-SCRIPT
+#$enter_swarm_worker = <<-SCRIPT
+#sudo docker swarm join --token SWMTKN-1-0kl5w9sjgf407d4g08brmpydu7wp8gdbl5mavwl620f4msdrnh-5qalcoe6kuc7aon3uqh8bqu7h 172.20.20.1:2377
+#SCRIPT
 
-$enter_swarm_manager = <<-SCRIPT
-sudo docker swarm join --token SWMTKN-1-0kl5w9sjgf407d4g08brmpydu7wp8gdbl5mavwl620f4msdrnh-3abk4wxr93ihxqf33x3ugce8j 172.20.20.1:2377
-SCRIPT
+#$enter_swarm_manager = <<-SCRIPT
+#sudo docker swarm join --token SWMTKN-1-0kl5w9sjgf407d4g08brmpydu7wp8gdbl5mavwl620f4msdrnh-3abk4wxr93ihxqf33x3ugce8j 172.20.20.1:2377
+#SCRIPT
 
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     (1..MANAGERS).each do |i|
         config.vm.define "manager0#{i}" do |manager|
           manager.vm.network :private_network, ip: "#{MANAGER_IP}#{i}"
-          manager.vm.provision "shell", inline: $enter_swarm_manager, privileged: true
+#          manager.vm.provision "shell", inline: $enter_swarm_manager, privileged: true
           manager.vm.hostname = "manager0#{i}"
           if i == 1
             #Only configure port to host for Manager01
@@ -59,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     (1..WORKERS).each do |i|
         config.vm.define "worker0#{i}" do |worker|
             worker.vm.network :private_network, ip: "#{WORKER_IP}#{i}"
-            worker.vm.provision "shell", inline: $enter_swarm_worker, privileged: true
+ #           worker.vm.provision "shell", inline: $enter_swarm_worker, privileged: true
             worker.vm.hostname = "worker0#{i}"
         end
     end
